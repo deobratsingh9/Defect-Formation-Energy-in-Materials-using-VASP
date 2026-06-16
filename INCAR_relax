@@ -1,0 +1,33 @@
+SYSTEM = SiC_Defect_Relax
+
+# Precision
+PREC    = Normal
+ENCUT   = 400
+
+# Electronic
+EDIFF   = 1E-5
+NELM    = 100
+ALGO    = Fast
+
+# Smearing
+ISMEAR  = 0
+SIGMA   = 0.05
+
+# Spin polarization
+ISPIN   = 2
+
+# Ionic relaxation
+IBRION  = 2
+NSW     = 100
+ISIF    = 2
+EDIFFG  = -0.02
+
+# Projection
+LORBIT  = 11
+
+# Output
+LWAVE   = .FALSE.
+LCHARG  = .FALSE.
+
+# Speed
+LREAL   = Auto
