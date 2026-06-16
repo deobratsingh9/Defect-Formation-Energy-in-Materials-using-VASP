@@ -1,0 +1,30 @@
+SYSTEM = SiC_Defect_Static
+
+# Precision
+PREC    = Accurate
+ENCUT   = 500
+
+# Electronic
+EDIFF   = 1E-6
+NELM    = 150
+ALGO    = Normal
+
+# Smearing
+ISMEAR  = -5
+
+# Spin
+ISPIN   = 2
+
+# Static calculation
+IBRION  = -1
+NSW     = 100
+
+# DOS / projections
+LORBIT  = 11
+
+# Output
+LWAVE   = .FALSE.
+LCHARG  = .TRUE.
+
+# Speed
+LREAL   = .FALSE.
