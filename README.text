@@ -1,6 +1,328 @@
+# Defect Formation Energy in SiC using VASP
+
+### Charged Carbon Vacancies & Fermi Level Analysis
+
+This repository contains VASP input files, SLURM job scripts, and Python post-processing tools for calculating the formation energies of charged carbon vacancies (V₍C₎) in silicon carbide (SiC).
+
+The workflow covers:
+
+* Bulk SiC calculations
+* Charged defect calculations
+* Structural relaxation
+* Static energy calculations
+* Fermi-level dependent formation energies
+* Charge transition levels
+* Ground-state envelope construction
+* Publication-quality formation energy plots
+
+---
+
+## Keywords
+
+⚡ Defect Formation Energy | Charged Vacancies | Fermi Level Analysis | Charge Transition Levels | Semiconductor Defects | SiC | VASP 🔥
+
+---
+
+## Repository Structure
+
+```text
+.
+├── Bulk_SiC/
+│   ├── POSCAR
+│   ├── POTCAR
+│   ├── INCAR_relax
+│   ├── INCAR_static
+│   ├── KPOINTS_relax
+│   └── KPOINTS_static
+│
+├── V_C/
+│   ├── POSCAR
+│   ├── ...
+│   ├── q0/
+│   ├── q+1/
+│   ├── q+2/
+│   ├── q-1/
+│   └── q-2/
+│
+├── run_all.sh
+├── formation_energy.py
+├── data.dat
+└── README.md
+```
+
+---
+
+## Scientific Background
+
+Point defects strongly influence the electronic and optical properties of semiconductors.
+
+For SiC, carbon vacancies are among the most important intrinsic defects and can exist in multiple charge states depending on the Fermi level position.
+
+The defect formation energy is calculated as:
+
+```math
+E_f(D^q)
+=
+E_{defect}
+-
+E_{bulk}
++
+\sum_i n_i \mu_i
++
+q(E_F + E_{VBM})
+```
+
+where:
+
+* Edefect = total energy of defective supercell
+* Ebulk = total energy of pristine supercell
+* μi = chemical potential
+* q = defect charge state
+* EF = Fermi level
+* EVBM = valence band maximum
+
+The most stable charge state at a given Fermi level is determined from the lowest formation-energy branch.
+
+---
+
+## Workflow
+
+### Step 1: Bulk SiC
+
+Optimize pristine SiC:
+
+```bash
+cd Bulk_SiC
+sbatch run_all.sh
+```
+
+Outputs:
+
+* Relaxed structure
+* Bulk reference energy
+* Band edges (VBM/CBM)
+
+---
+
+### Step 2: Create Carbon Vacancy
+
+Generate the vacancy structure:
+
+```text
+SiC → remove one C atom → V_C
+```
+
+Prepare calculations for different charge states:
+
+```text
+q = 0
+q = +1
+q = +2
+q = -1
+q = -2
+```
+
+---
+
+### Step 3: Relaxation and Static Calculations
+
+The provided SLURM workflow automatically performs:
+
+#### Relaxation
+
+```text
+INCAR_relax
+KPOINTS_relax
+```
+
+followed by
+
+#### Static Calculation
+
+```text
+INCAR_static
+KPOINTS_static
+```
+
+for every defect configuration.
+
+Run:
+
+```bash
+sbatch run_all.sh
+```
+
+---
+
+## Automated Workflow
+
+The supplied script:
+
+```bash
+run_all.sh
+```
+
+automatically:
+
+✔ Runs Bulk SiC
+
+✔ Runs V_C calculations
+
+✔ Runs all charge states
+
+✔ Performs relaxation
+
+✔ Performs static calculations
+
+✔ Saves outputs
+
+✔ Cleans large temporary files
+
+---
+
+## Post-Processing
+
+After all calculations are completed, create a file:
+
+```text
+data.dat
+```
+
+Format:
+
+```text
+System    Energy      FermiRef     VBM      CBM
+
+Bulk      ...
+VC0       ...
+VC+1      ...
+VC+2      ...
+VC-1      ...
+VC-2      ...
+```
+
+---
+
+## Formation Energy Plot
+
+Generate formation-energy diagrams:
+
+```bash
+python formation_energy.py
+```
+
+Output:
+
+```text
+VC_formation_energy.png
+```
+
+Features:
+
+* Formation-energy curves
+* Charged defect states
+* Fermi-level dependence
+* Ground-state envelope
+* Charge-transition levels
+* Publication-quality figure
+
+---
+
+## Example Output
+
+The script automatically plots:
+
+* V_C⁰
+* V_C⁺¹
+* V_C⁺²
+* V_C⁻¹
+* V_C⁻²
+
+along with:
+
+* Lowest-energy envelope
+* Transition levels
+* VBM and CBM markers
+
+---
+
+## Software Requirements
+
+### DFT Calculations
+
+* VASP 5.x or newer
+
+### Python Packages
+
+```bash
+pip install numpy matplotlib
+```
+
+Required modules:
+
+* NumPy
+* Matplotlib
+
+---
+
+## Applications
+
+This workflow can be extended to:
+
+* Silicon vacancies (VSi)
+* Antisite defects
+* Interstitials
+* Dopants
+* GaN
+* AlN
+* ZnO
+* TiO₂
+* Perovskites
+* Wide-bandgap semiconductors
+
+---
+
 Formation Energy (eV) 	Interpretation 		Expected Concentration 
 < 1 eV 			Very easy to form 	Very high 
 1 – 2 eV 		Easy 			High
 2 – 3 eV 		Moderate 		Noticeable 
 3 – 5 eV 		Difficult 		Low
 > 5 eV 			Very difficult 		Extremely low
+
+## Learning Outcomes
+
+After completing this tutorial, users will be able to:
+
+✔ Calculate defect formation energies
+
+✔ Perform charged defect calculations
+
+✔ Analyze Fermi-level dependence
+
+✔ Determine charge transition levels
+
+✔ Identify thermodynamically stable charge states
+
+✔ Generate publication-quality defect diagrams
+
+✔ Study defect physics in semiconductors
+
+---
+
+## Related YouTube Tutorial
+
+🎥 **VASP Tutorial: How to Calculate Defect Formation Energy in Materials | Charged Defects & Fermi Levels**
+
+Repository accompanies the complete step-by-step video tutorial.
+
+---
+
+## Author
+
+**Deobrat Singh**
+
+📧 [deobratqmatx@gmail.com](mailto:deobratqmatx@gmail.com)
+
+🔗 GitHub: https://github.com/deobratsingh9
+
+🎥 YouTube: https://www.youtube.com/@deobratqmatx
